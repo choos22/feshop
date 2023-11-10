@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Login.scss';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -32,6 +32,7 @@ function Login(props) {
     }
 
     let response = await loginUser(valueLogin, password);
+    console.log(response);
     if (response.data && response && +response.data.EC === 0) {
       //success
       let data = {
@@ -46,7 +47,6 @@ function Login(props) {
       //err
       toast.error(response.data.EM);
     }
-    console.log('cehck res', response.data);
   };
 
   const handlePressEnter = (event) => {
@@ -55,6 +55,14 @@ function Login(props) {
       handleLogin();
     }
   };
+
+  useEffect(() => {
+    let session = sessionStorage.getItem('account');
+    if (session) {
+      history.push('/');
+      window.location.reload();
+    }
+  }, []);
   return (
     <div className="login-container">
       <div className="container">
